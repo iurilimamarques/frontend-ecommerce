@@ -1,0 +1,18 @@
+.container-products{
+    display: flex;
+    flex-direction: column;
+}
+
+.container-products-filter {
+    display: flex;
+    flex-direction: row;
+    padding: 20px 20px 20px 20px;
+}
+
+.ui.card {
+    cursor: pointer;
+}
+
+.ui.card.content > a {
+    color: red;
+}

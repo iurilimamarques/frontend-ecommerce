@@ -1,0 +1,17 @@
+.container-topbar {
+    padding: 0 20px 0 20px;
+}
+
+.ui.segment {
+    background-color: #1d2d4c;
+}
+
+.ui.input {
+    width: 100%;
+}
+
+.ui.header.titulo {
+    color: white;
+    cursor: pointer;
+    width: 140px;
+}
