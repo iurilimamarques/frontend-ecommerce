@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-
 import { Button, Input, Grid, Segment, Divider, Icon, Label, Dropdown, Header } from "semantic-ui-react";
-import "semantic-ui-css/semantic.min.css";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
+import { modifySearch, clickSearch } from '../../store/ProductsConfig/actions';
+
+import "semantic-ui-css/semantic.min.css";
 import './styles.css';
 
 const trigger = (
@@ -20,21 +23,17 @@ class TopBar extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { botao: true };
-        this.changeBool = this.changeBool.bind(this);
+        //this.state = { search: this.props.search };
+        this.clickSearch = this.clickSearch.bind(this);
     }
 
-    changeBool(){
-        let { botao } = this.state;
-        if (botao) {
-            this.setState({botao: false})
-        }else{
-            this.setState({botao: true})
-        }
+    clickSearch(searchTerm) {
+        this.props.clickSearch(searchTerm);
     }
 
-    render() {
-        const { botao } = this.state;
+    render() {     
+        const { pending, search } = this.props;
+
         return (
             <div className="container-topbar">
                 <Divider hidden />
@@ -45,18 +44,20 @@ class TopBar extends Component {
                                 <Header as="h2" className="titulo">E-Commerce</Header>
                             </Grid.Column>
                             <Grid.Column width={6}>
-                                {botao ?
-                                    <Input
-                                        icon={{ name: 'search', link: true, onClick: () => this.changeBool() }}
-                                        placeholder="Buscar por..."
-                                        size="big"
-                                    />
-                                    :
+                                { pending ?
                                     <Input
                                         placeholder="Buscar por..."
                                         size="big"
                                         loading
-                                        onClick={() => this.changeBool()}
+                                        value={search}
+                                    />
+                                    :
+                                    <Input
+                                        icon={{ name: 'search', link: true, onClick: () => this.clickSearch() }}
+                                        placeholder="Buscar por..."
+                                        size="big"
+                                        value={search}
+                                        onChange={text => this.props.modifySearch(text.target.value)}
                                     />
                                 }
                             </Grid.Column>
@@ -98,4 +99,13 @@ class TopBar extends Component {
     }
 }
 
-export default TopBar;
+const mapStateToProps = state => ({
+  products: state.ProductsReducers.products,
+  search: state.ProductsReducers.search,
+  pending: state.ProductsReducers.pending
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({modifySearch, clickSearch}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps) (TopBar);
