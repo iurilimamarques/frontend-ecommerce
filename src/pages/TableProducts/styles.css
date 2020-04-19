@@ -2,3 +2,45 @@
     display: flex;
     flex-direction: column;
 }
+
+.image {
+    cursor: pointer;
+}
+
+.title-product {
+    cursor: pointer;
+}
+
+.column.column-card{
+    width: 276px !important;
+}
+
+.ui.card.card-product:hover {
+    box-shadow: 0 0 0 1px #d4d4d5, 0 2px 5px 2px rgba(34,36,38,.12), 0 2px 10px 0 rgba(34,36,38,.15);
+}
+
+.info-favorites{
+    color: rgba(0,0,0,.4);
+}
+
+.info-favorites:hover {
+    color: #ff877e;
+}
+
+.description.description-container {
+    text-align: center;
+}
+
+.ui.button.btn-add-favorite {
+    margin-top: 5px;
+}
+
+.header.header-product{
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+}
+
+.price {
+    font-weight: normal;
+}

@@ -1,58 +1,51 @@
 import React, { Component } from 'react';
 import { Label, Menu } from "semantic-ui-react";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import { searchByCategory } from '../../store/ProductsConfig/actions';
 
 import './styles.css';
 
 class SideBar extends Component {
-    state = { activeItem: 'inbox' }
-
-    handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+    constructor() {
+        super();
+        this.state = { activeItem: 'inbox' }
+    }
+    handleItemClick = (e, { i_category, name }) => {                
+        this.setState({ activeItem: name })
+        this.props.searchByCategory(i_category);
+    }
 
     render() {
         const { activeItem } = this.state
+        const { categories } = this.props;
         
         return (
             <div className="container-sidebar">
                 <Menu vertical>
-                    <Menu.Item
-                        name='inbox'
-                        active={activeItem === 'inbox'}
-                        onClick={this.handleItemClick}
-                    >
-                        <Label color='teal'>1</Label>
-                        Todos
-                    </Menu.Item>
-
-                    <Menu.Item
-                        name='spam'
-                        active={activeItem === 'spam'}
-                        onClick={this.handleItemClick}
-                    >
-                        <Label>51</Label>
-                        Livros
-                    </Menu.Item>
-
-                    <Menu.Item
-                        name='updates'
-                        active={activeItem === 'updates'}
-                        onClick={this.handleItemClick}
-                    >
-                        <Label>1</Label>
-                        Roupas
-                    </Menu.Item>
-
-                    <Menu.Item
-                        name='eletronicos'
-                        active={activeItem === 'eletronicos'}
-                        onClick={this.handleItemClick}
-                    >
-                        <Label>1</Label>
-                        Eletrônicos
-                    </Menu.Item>
+                    {categories.response.map((value, key) => {
+                        return( <Menu.Item
+                                    key={key}
+                                    name={value.nome}
+                                    i_category={value.i_categoria}
+                                    active={activeItem === value.nome}
+                                    onClick={this.handleItemClick}
+                                >
+                                    {value.nome==='Todos'
+                                        ?   <Label color="teal">{value.count}</Label>
+                                        :   <Label>{value.count}</Label>
+                                    }
+                                    {value.nome}
+                                </Menu.Item>)
+                    })}
                 </Menu>
             </div>
         );
     }
 }
 
-export default SideBar;
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({searchByCategory}, dispatch);
+
+export default connect(null, mapDispatchToProps) (SideBar);

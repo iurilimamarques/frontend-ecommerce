@@ -23,7 +23,6 @@ class TopBar extends Component {
     constructor(props) {
         super(props);
 
-        //this.state = { search: this.props.search };
         this.clickSearch = this.clickSearch.bind(this);
     }
 
@@ -37,7 +36,7 @@ class TopBar extends Component {
         return (
             <div className="container-topbar">
                 <Divider hidden />
-                <Segment>
+                <Segment className="topbar">
                     <Grid columns={16} verticalAlign="middle" stackable>
                         <Grid.Row>
                             <Grid.Column width={4}>
@@ -53,7 +52,7 @@ class TopBar extends Component {
                                     />
                                     :
                                     <Input
-                                        icon={{ name: 'search', link: true, onClick: () => this.clickSearch() }}
+                                        icon={{ name: 'search', link: true, onClick: () => this.clickSearch(search) }}
                                         placeholder="Buscar por..."
                                         size="big"
                                         value={search}

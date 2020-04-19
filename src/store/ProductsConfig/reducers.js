@@ -2,10 +2,12 @@ import { MODIFY_SEARCH,
          FETCH_SEARCH_PENDING,
          FETCH_SEARCH_SUCCESS,
          FETCH_SEARCH_ERROR,
-         MODIFY_PRODUCTS } from '../constants';
+         MODIFY_PRODUCTS,
+         MODIFY_CATEGORY } from '../constants';
 
 const INITIAL_STATE = {
     products: [],
+    categories: [],
     search: '',
     pending: false,
     error: null
@@ -35,13 +37,16 @@ const ProductsReducers = (state = INITIAL_STATE, action) => {
                 pending: false,
                 error: action.error
             }
-        case MODIFY_PRODUCTS:
-            console.log(action.payload);
-        
+        case MODIFY_PRODUCTS:        
             return {
                 ...state,
                 products: action.payload,
                 pending: false
+            }
+        case MODIFY_CATEGORY:
+            return {
+                ...state,
+                categories: action.payload
             }
         default: 
             return state;

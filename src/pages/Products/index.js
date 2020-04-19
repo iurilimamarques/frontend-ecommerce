@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { modifySearch, clickSearch } from '../../store/ProductsConfig/actions';
+import { getCategories, getAllProducts } from '../../store/ProductsConfig/actions';
 
 import TopBar from '../TopBar';
 import SideBar from '../SideBar';
@@ -13,20 +13,23 @@ import './styles.css';
 class Products extends Component {
 
     componentDidMount() {
-        this.props.clickSearch('');
+        this.props.getCategories();
+        this.props.getAllProducts();
     }
 
     render() {
-        const { products } = this.props;
-
-        console.log(products.response);
-                 
+        const { products, categories } = this.props;                         
         return(
             <div className="container-products">
                 <TopBar />
                 
                 <div className="container-products-filter">
-                    <SideBar />
+                    {!categories.response
+                        ?   null
+                        :   <SideBar 
+                                categories={categories}
+                            />
+                    }
 
                     {!products.response 
                         ?   <div className="interactions">
@@ -44,10 +47,11 @@ class Products extends Component {
 }
 
 const mapStateToProps = state => ({
-  products: state.ProductsReducers.products
+  products: state.ProductsReducers.products,
+  categories: state.ProductsReducers.categories
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({modifySearch, clickSearch}, dispatch);
+  bindActionCreators({ getCategories, getAllProducts }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps) (Products);
