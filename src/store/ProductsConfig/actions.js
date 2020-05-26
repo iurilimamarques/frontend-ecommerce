@@ -7,12 +7,20 @@ import { MODIFY_SEARCH,
          FETCH_SEARCH_SUCCESS,
          FETCH_SEARCH_ERROR,
          MODIFY_PRODUCTS,
-         MODIFY_CATEGORY } from '../constants';
+         MODIFY_CATEGORY,
+         MODIFY_CART_ITEMS } from '../constants';
 
 export const modifySearch = (text) => {
     return {
         type: MODIFY_SEARCH,
         payload: text
+    }
+}
+
+export const modifyCartItems = (items) => {        
+    return {
+        type: MODIFY_CART_ITEMS,
+        payload: items
     }
 }
 
@@ -72,6 +80,13 @@ export const getCategories = () => {
     }
 }
 
+export const getCartItems = () => {
+    return dispatch => {
+        return axios.get(`${URL_API}/category`)
+            .then( ({data}) => dispatch(modifyCartItems(data)));
+    }
+}
+
 const fetchSearchPending = (erro, dispatch) =>{
     dispatch(
         {
@@ -93,4 +108,3 @@ const fetchSearchError = (error) => {
         error: error
     }
 }
-

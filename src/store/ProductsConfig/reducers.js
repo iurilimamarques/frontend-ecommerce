@@ -3,11 +3,14 @@ import { MODIFY_SEARCH,
          FETCH_SEARCH_SUCCESS,
          FETCH_SEARCH_ERROR,
          MODIFY_PRODUCTS,
-         MODIFY_CATEGORY } from '../constants';
+         MODIFY_CATEGORY,
+         MODIFY_CART_ITEMS } from '../constants';
 
 const INITIAL_STATE = {
     products: [],
     categories: [],
+    cart_items: [],
+    cart_items_quantity: [],
     search: '',
     pending: false,
     error: null
@@ -19,6 +22,12 @@ const ProductsReducers = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 search: action.payload
+            }
+        case MODIFY_CART_ITEMS:            
+            return {
+                ...state,
+                cart_items: action.payload,
+                cart_items_quantity: action.payload.length
             }
         case FETCH_SEARCH_PENDING: 
             return {

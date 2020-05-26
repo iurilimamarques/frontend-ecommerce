@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Input, Grid, Segment, Divider, Icon, Label, Dropdown, Header } from "semantic-ui-react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 
 import { modifySearch, clickSearch } from '../../store/ProductsConfig/actions';
 
@@ -15,14 +16,29 @@ const trigger = (
 );
 
 const options = [
-  { key: 'sign-in', text: 'Entrar', icon: 'sign-in' },
-  { key: 'user', text: 'Cadastrar', icon: 'user' }
+  { key: 'sign-in', 
+    text: (
+        <Link to="/login" style={{color: 'black'}}>
+            <div>
+                <Icon name='sign-in' />
+                Entrar
+            </div>
+        </Link>
+    )
+  },
+  { key: 'user', 
+    text: (
+        <Link to="/login" style={{color: 'black'}}>
+            Cadastrar
+        </Link>
+    ), 
+    icon: 'user'
+  }
 ];
 
 class TopBar extends Component {
     constructor(props) {
-        super(props);
-
+        super();        
         this.clickSearch = this.clickSearch.bind(this);
     }
 
@@ -30,8 +46,14 @@ class TopBar extends Component {
         this.props.clickSearch(searchTerm);
     }
 
+    _handleKeyDown = (e) => {        
+        if (e.key === 'Enter') {
+            this.props.clickSearch(e.target.value);
+        }
+    }
+
     render() {     
-        const { pending, search } = this.props;
+        const { pending, search, cart_items_quantity } = this.props;        
 
         return (
             <div className="container-topbar">
@@ -57,6 +79,7 @@ class TopBar extends Component {
                                         size="big"
                                         value={search}
                                         onChange={text => this.props.modifySearch(text.target.value)}
+                                        onKeyDown={this._handleKeyDown}
                                     />
                                 }
                             </Grid.Column>
@@ -76,12 +99,11 @@ class TopBar extends Component {
                                         <Icon name='shop' />
                                     </Button>
                                     <Label as='a' basic color='blue' pointing='left'>
-                                        5
+                                        {cart_items_quantity==='' ? 0 : cart_items_quantity}
                                     </Label>
                                 </Button>
                             </Grid.Column>
                             <Grid.Column width={2} textAlign="right">
-
                                 <Dropdown
                                     trigger={trigger}
                                     pointing='top left'
@@ -101,7 +123,8 @@ class TopBar extends Component {
 const mapStateToProps = state => ({
   products: state.ProductsReducers.products,
   search: state.ProductsReducers.search,
-  pending: state.ProductsReducers.pending
+  pending: state.ProductsReducers.pending,
+  cart_items_quantity: state.ProductsReducers.cart_items_quantity
 });
 
 const mapDispatchToProps = dispatch =>
